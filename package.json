@@ -1,15 +1,16 @@
 {
-  "name": "pc-support-site",
-  "version": "1.0.0",
-  "description": "PC support backend",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^16.6.1",
-    "express": "^4.22.3",
-    "mongoose": "^8.24.5"
+    "name": "global-pc-support",
+    "version": "1.0.0",
+    "description": "Global PC Support Backend",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js"
+    },
+    "dependencies": {
+      "express": "^4.18.2",
+      "mongoose": "^7.0.0",
+      "cors": "^2.8.5",
+      "dotenv": "^16.0.0",
+      "razorpay": "^2.9.2"
+    }
   }
-}
