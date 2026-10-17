@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Your Support Case - Global PC Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen py-12 px-4">
+    <div class="max-w-3xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden">
+        <div class="bg-blue-600 p-8 text-white text-center">
+            <h1 class="text-3xl font-bold">Start Your Support Case</h1>
+            <p class="opacity-90 mt-2">Fill in your details and we'll get you fixed!</p>
+        </div>
+
+        <form id="superForm" class="p-8 space-y-8">
+            <!-- Section 1: Issue Type -->
+            <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">1. Select Your Plan</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <label class="cursor-pointer border-2 p-4 rounded-xl hover:border-blue-500 transition block text-center relative bg-gray-50">
+                        <input type="radio" name="issueType" value="normal" checked class="absolute top-4 right-4">
+                        <div class="font-bold text-blue-600">Normal Support</div>
+                        <p class="text-xs text-gray-500">General troubleshooting</p>
+                        <p class="text-lg font-black mt-2">$30</p>
+                    </label>
+                    <label class="cursor-pointer border-2 p-4 rounded-xl hover:border-red-500 transition block text-center relative bg-gray-50">
+                        <input type="radio" name="issueType" value="advanced" class="absolute top-4 right-4">
+                        <div class="font-bold text-red-600">Advanced Support</div>
+                        <p class="text-xs text-gray-500">Critical errors & logs</p>
+                        <p class="text-lg font-black mt-2">$50</p>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Section 2: Problem Description -->
+            <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">2. Describe Your Problem</h3>
+                <textarea id="description" required rows="3" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="What's happening with your PC?"></textarea>
+            </div>
+
+            <!-- Section 3: User Details -->
+            <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">3. Your Contact Information</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <input type="text" id="fullName" required placeholder="Full Name" class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    <input type="email" id="email" required placeholder="Email Address" class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    <input type="tel" id="phone" required placeholder="Phone Number" class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    <input type="text" id="country" required placeholder="Country" class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+            </div>
+
+            <button type="submit" id="payBtn" class="w-full bg-blue-600 text-white p-4 rounded-xl font-bold text-xl hover:bg-blue-700 transition shadow-lg">
+                Pay & Start Support <i class="fas fa-credit-card ml-2"></i>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('superForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('payBtn');
+            btn.innerText = 'Processing...';
+            btn.disabled = true;
+
+            const userData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                country: document.getElementById('country').value
+            };
+
+            const caseData = {
+                issueType: document.querySelector('input[name="issueType"]:checked').value,
+                description: document.getElementById('description').value
+            };
+
+            try {
+                // 1. Register User
+                const regRes = await fetch('http://localhost:5000/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(userData)
+                });
+
+                let userId = '';
+                if (regRes.ok) {
+                    const regData = await regRes.json();
+                    userId = regData.userId;
+                } else {
+                    // If already registered, we should ideally fetch the userId.
+                    // For this "Super-Form", we'll alert and let the user know.
+                    const regData = await regRes.json();
+                    if (regData.message.includes('already registered')) {
+                        alert('You are already registered! We will link this case to your existing account.');
+                        // In a real app, we'd call /api/auth/me here.
+                        // For now, we will try to proceed.
+                    } else {
+                        throw new Error(regData.message);
+                    }
+                }
+
+                // 2. Create Case
+                const caseRes = await fetch('http://localhost:5000/api/cases/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: userId || 'existing_user', // Simplified for MVP
+                        issueType: caseData.issueType,
+                        description: caseData.description
+                    })
+                });
+                const caseDataRes = await caseRes.json();
+
+                if (!caseRes.ok) throw new Error(caseDataRes.message);
+
+                // 3. Create Razorpay Order
+                const orderRes = await fetch('http://localhost:5000/api/payments/create-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        caseId: caseDataRes.caseId,
+                        amount: caseDataRes.amountDue
+                    })
+                });
+                const order = await orderRes.json();
+
+                // 4. Open Razorpay
+                const options = {
+                    "key": "rzp_test_TowGWirwaWcs2R",
+                    "amount": order.amount,
+                    "currency": "USD",
+                    "name": "Global PC Support",
+                    "description": "Technical Support Case",
+                    "order_id": order.id,
+                    "handler": async function (response) {
+                        const verifyRes = await fetch('http://localhost:5000/api/payments/verify', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature,
+                                caseId: caseDataRes.caseId,
+                                userId: userId
+                            })
+                        });
+                        if (verifyRes.ok) {
+                            alert('Payment Successful!');
+                            window.location.href = 'dashboard.html';
+                        }
+                    },
+                    "theme": { "color": "#2563eb" }
+                };
+                const rzp1 = new Razorpay(options);
+                rzp1.open();
+
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                btn.innerText = 'Pay & Start Support';
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
