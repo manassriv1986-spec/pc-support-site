@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Global PC Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen px-4">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
+        <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+            <i class="fas fa-lock"></i>
+        </div>
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Secure Payment</h2>
+        <p class="text-gray-500 mb-8">Complete your payment to unlock support</p>
+
+        <div class="bg-gray-100 p-6 rounded-xl mb-8">
+            <p class="text-gray-600 mb-1">Amount to Pay</p>
+            <p class="text-4xl font-black text-gray-900">$<span id="amount">0</span> <span class="text-lg font-normal text-gray-500">USD</span></p>
+        </div>
+
+        <button id="payNowBtn" class="w-full bg-blue-600 text-white p-4 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg mb-4">
+            Pay with PayPal / Credit Card
+        </button>
+        <p class="text-xs text-gray-400">Payments are processed securely. International cards accepted.</p>
+    </div>
+
+    <script>
+        document.getElementById('amount').innerText = localStorage.getItem('amountDue') || '30';
+
+        document.getElementById('payNowBtn').addEventListener('click', () => {
+            // SIMULATION: Since we haven't linked the real Stripe/PayPal API yet,
+            // we will simulate a successful payment.
+            alert('Connecting to Payment Gateway...');
+
+            setTimeout(() => {
+                alert('Payment Successful! Your case is now active.');
+                window.location.href = 'dashboard.html';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
