@@ -55,6 +55,7 @@
                 
                 if (res.ok) {
                     localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('userName', data.name || 'User');
                     alert('Login successful!');
                     window.location.href = 'dashboard.html';
                 } else {
