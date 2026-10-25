@@ -6,11 +6,17 @@
     <title>Global PC Support - Professional Remote Troubleshooting</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 min-h-screen flex flex-col text-gray-100">
-    <div id="nav-placeholder"></div>
+<body class="min-h-screen flex flex-col text-gray-100 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=2000&q=80');">
+    
+    <!-- Dark Overlay to keep text readable and sharp -->
+    <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm z-0"></div>
 
-    <div class="flex-grow flex items-center justify-center px-4 py-12">
-        <div class="bg-white/10 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-2xl w-full max-w-lg text-center">
+    <!-- Navigation (Ensured it sits above the background overlay) -->
+    <div class="relative z-10 w-full" id="nav-placeholder"></div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 flex-grow flex items-center justify-center px-4 py-12">
+        <div class="bg-white/10 backdrop-blur-xl border border-white/15 p-8 sm:p-10 rounded-3xl shadow-2xl w-full max-w-lg text-center">
             <div class="inline-block p-3 bg-blue-500/20 rounded-2xl mb-4 text-blue-400 font-bold text-sm">
                 ⚡ Enterprise-Grade Remote Tech Support
             </div>
