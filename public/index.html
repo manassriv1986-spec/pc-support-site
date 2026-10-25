@@ -3,83 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global PC Support | Professional Tech Help</title>
+    <title>Global PC Support</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
-    </style>
 </head>
-<body class="bg-gray-50 font-sans">
-
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md p-4 flex justify-between items-center px-8">
-        <div class="text-2xl font-bold text-blue-800">Global<span class="text-blue-500">PC</span>Support</div>
-        <div class="space-x-6">
-            <a href="#" class="text-gray-600 hover:text-blue-600">Home</a>
-            <a href="#services" class="text-gray-600 hover:text-blue-600">Services</a>
-            <a href="register.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Get Help Now</a>
-        </div>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Navigation Header -->
+    <nav class="w-full bg-white border-b border-gray-100 py-4 px-6 flex justify-between items-center shadow-sm">
+        <a href="index.html" class="text-xl font-bold text-blue-600 hover:text-blue-700 transition">
+            Global PC Support
+        </a>
+        <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition flex items-center gap-1">
+            &larr; Home
+        </a>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="gradient-bg text-white py-20 px-8 text-center">
-        <h1 class="text-5xl font-extrabold mb-6">Stop Struggling With Your PC.</h1>
-        <p class="text-xl mb-10 opacity-90">Expert remote troubleshooting for users worldwide. Fast, secure, and professional.</p>
-        <a href="register.html" class="bg-white text-blue-700 px-8 py-4 rounded-full text-lg font-bold hover:bg-gray-100 transition shadow-lg">
-            Open a Support Case <i class="fas fa-arrow-right ml-2"></i>
-        </a>
-    </header>
-
-    <!-- Trust Badges -->
-    <section class="py-12 bg-white border-b">
-        <div class="max-w-6xl mx-auto px-8 flex flex-wrap justify-around text-center gap-8">
-            <div>
-                <i class="fas fa-shield-alt text-3xl text-blue-600 mb-2"></i>
-                <p class="font-semibold text-gray-700">Secure Connections</p>
-            </div>
-            <div>
-                <i class="fas fa-globe text-3xl text-blue-600 mb-2"></i>
-                <p class="font-semibold text-gray-700">Worldwide Service</p>
-            </div>
-            <div>
-                <i class="fas fa-clock text-3xl text-blue-600 mb-2"></i>
-                <p class="font-semibold text-gray-700">Fast Response</p>
-            </div>
-            <div>
-                <i class="fas fa-check-circle text-3xl text-blue-600 mb-2"></i>
-                <p class="font-semibold text-gray-700">Certified Experts</p>
+    <!-- Main Content -->
+    <div class="flex-grow flex items-center justify-center px-4">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
+            <h1 class="text-3xl font-black text-gray-800 mb-2">Global PC Support</h1>
+            <p class="text-gray-600 mb-8 text-sm">Professional remote troubleshooting, log analysis, and expert technical support.</p>
+            <div class="space-y-4">
+                <a href="register.html" class="block w-full bg-blue-600 text-white p-4 rounded-lg font-bold hover:bg-blue-700 transition shadow-md">
+                    Get Started / Register
+                </a>
+                <a href="dashboard.html" class="block w-full bg-gray-100 text-gray-700 p-4 rounded-lg font-bold hover:bg-gray-200 transition">
+                    View Existing Cases
+                </a>
             </div>
         </div>
-    </section>
-
-    <!-- Services -->
-    <section id="services" class="py-20 px-8 max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-center mb-16 text-gray-800">How We Help You</h2>
-        <div class="grid md:grid-cols-2 gap-12">
-            <div class="bg-white p-8 rounded-2xl shadow-sm border hover:shadow-md transition">
-                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">
-                    <i class="fas fa-laptop"></i>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">General Troubleshooting</h3>
-                <p class="text-gray-600 mb-6">Slow performance, app crashes, OS updates, or general "how-to" questions. Perfect for everyday issues.</p>
-                <p class="text-blue-600 font-bold text-xl">$30 per case</p>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-sm border hover:shadow-md transition">
-                <div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center mb-6 text-2xl">
-                    <i class="fas fa-tools"></i>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">Advanced Diagnostics</h3>
-                <p class="text-gray-600 mb-6">Blue screens (BSOD), registry errors, hardware failures, or complex network issues requiring log analysis.</p>
-                <p class="text-red-600 font-bold text-xl">$50 per case</p>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-gray-900 text-gray-400 py-10 text-center">
-        <p>&copy; 2026 Global PC Support. All rights reserved.</p>
-    </footer>
-
+    </div>
 </body>
 </html>
-

@@ -3,168 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Start Your Support Case - Global PC Support</title>
+    <title>Describe Issue - Global PC Support</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
-<body class="bg-gray-100 min-h-screen py-12 px-4">
-    <div class="max-w-3xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden">
-        <div class="bg-blue-600 p-8 text-white text-center">
-            <h1 class="text-3xl font-bold">Start Your Support Case</h1>
-            <p class="opacity-90 mt-2">Fill in your details and we'll get you fixed!</p>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Navigation Header -->
+    <nav class="w-full bg-white border-b border-gray-100 py-4 px-6 flex justify-between items-center shadow-sm">
+        <a href="index.html" class="text-xl font-bold text-blue-600 hover:text-blue-700 transition">
+            Global PC Support
+        </a>
+        <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition flex items-center gap-1">
+            &larr; Home
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="flex-grow flex items-center justify-center px-4">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-xl">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Describe Your Issue</h2>
+            <form id="supportForm" class="space-y-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <label class="border p-4 rounded-xl cursor-pointer flex flex-col justify-between hover:border-blue-500 transition">
+                        <div>
+                            <span class="font-bold text-blue-600 block mb-1">Normal Support</span>
+                            <span class="text-xs text-gray-500">General questions, speed issues, app fixes.</span>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="font-black text-gray-800">₹30</span>
+                            <input type="radio" name="tier" value="30" checked class="text-blue-600">
+                        </div>
+                    </label>
+
+                    <label class="border p-4 rounded-xl cursor-pointer flex flex-col justify-between hover:border-blue-500 transition">
+                        <div>
+                            <span class="font-bold text-red-600 block mb-1">Advanced Support</span>
+                            <span class="text-xs text-gray-500">Blue screens, critical errors, log analysis.</span>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="font-black text-gray-800">₹50</span>
+                            <input type="radio" name="tier" value="50" class="text-blue-600">
+                        </div>
+                    </label>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Describe the problem in detail</label>
+                    <textarea id="description" rows="4" required placeholder="e.g. My PC restarts every time I open Chrome..." class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 text-white p-4 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg">
+                    Confirm Case & Proceed to Payment
+                </button>
+            </form>
         </div>
-
-        <form id="superForm" class="p-8 space-y-8">
-            <!-- Section 1: Issue Type -->
-            <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">1. Select Your Plan</h3>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <label class="cursor-pointer border-2 p-4 rounded-xl hover:border-blue-500 transition block text-center relative bg-gray-50">
-                        <input type="radio" name="issueType" value="normal" checked class="absolute top-4 right-4">
-                        <div class="font-bold text-blue-600">Normal Support</div>
-                        <p class="text-xs text-gray-500">General troubleshooting</p>
-                        <p class="text-lg font-black mt-2">$30</p>
-                    </label>
-                    <label class="cursor-pointer border-2 p-4 rounded-xl hover:border-red-500 transition block text-center relative bg-gray-50">
-                        <input type="radio" name="issueType" value="advanced" class="absolute top-4 right-4">
-                        <div class="font-bold text-red-600">Advanced Support</div>
-                        <p class="text-xs text-gray-500">Critical errors & logs</p>
-                        <p class="text-lg font-black mt-2">$50</p>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Section 2: Problem Description -->
-            <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">2. Describe Your Problem</h3>
-                <textarea id="description" required rows="3" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="What's happening with your PC?"></textarea>
-            </div>
-
-            <!-- Section 3: User Details -->
-            <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">3. Your Contact Information</h3>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <input type="text" id="fullName" required placeholder="Full Name" class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    <input type="email" id="email" required placeholder="Email Address" class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    <input type="tel" id="phone" required placeholder="Phone Number" class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    <input type="text" id="country" required placeholder="Country" class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-            </div>
-
-            <button type="submit" id="payBtn" class="w-full bg-blue-600 text-white p-4 rounded-xl font-bold text-xl hover:bg-blue-700 transition shadow-lg">
-                Pay & Start Support <i class="fas fa-credit-card ml-2"></i>
-            </button>
-        </form>
     </div>
 
     <script>
-        document.getElementById('superForm').addEventListener('submit', async (e) => {
+        document.getElementById('supportForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('payBtn');
-            btn.innerText = 'Processing...';
-            btn.disabled = true;
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                alert('Session expired. Please register first.');
+                window.location.href = 'register.html';
+                return;
+            }
 
-            const userData = {
-                fullName: document.getElementById('fullName').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                country: document.getElementById('country').value
-            };
-
-            const caseData = {
-                issueType: document.querySelector('input[name="issueType"]:checked').value,
-                description: document.getElementById('description').value
-            };
+            const description = document.getElementById('description').value;
+            const amount = document.querySelector('input[name="tier"]:checked').value;
 
             try {
-                // 1. Register User
-                const regRes = await fetch('/api/auth/register', {
+                const res = await fetch('/api/cases/create', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(userData)
+                    body: JSON.stringify({ userId, description, amount })
                 });
-
-                let userId = '';
-                if (regRes.ok) {
-                    const regData = await regRes.json();
-                    userId = regData.userId;
+                const data = await res.json();
+                if (res.ok) {
+                    localStorage.setItem('caseId', data.caseId);
+                    localStorage.setItem('caseNumber', data.caseNumber);
+                    localStorage.setItem('amountDue', amount);
+                    window.location.href = 'payment.html';
                 } else {
-                    // If already registered, we should ideally fetch the userId.
-                    // For this "Super-Form", we'll alert and let the user know.
-                    const regData = await regRes.json();
-                    if (regData.message.includes('already registered')) {
-                        alert('You are already registered! We will link this case to your existing account.');
-                        // In a real app, we'd call /api/auth/me here.
-                        // For now, we will try to proceed.
-                    } else {
-                        throw new Error(regData.message);
-                    }
+                    alert(data.message || 'Failed to create case');
                 }
-
-                // 2. Create Case
-                const caseRes = await fetch('/api/cases/create', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        userId: userId || 'existing_user', // Simplified for MVP
-                        issueType: caseData.issueType,
-                        description: caseData.description
-                    })
-                });
-                const caseDataRes = await caseRes.json();
-
-                if (!caseRes.ok) throw new Error(caseDataRes.message);
-
-                // 3. Create Razorpay Order
-                const orderRes = await fetch('/api/payments/create-order', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        caseId: caseDataRes.caseId,
-                        amount: caseDataRes.amountDue
-                    })
-                });
-                const order = await orderRes.json();
-
-                // 4. Open Razorpay
-                const options = {
-                    "key": "rzp_test_TpKJO3eu8onRm6",
-                    "amount": order.amount,
-                    "currency": "USD",
-                    "name": "Global PC Support",
-                    "description": "Technical Support Case",
-                    "order_id": order.id,
-                    "handler": async function (response) {
-                        const verifyRes = await fetch('/api/payments/verify', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_payment_id: response.razorpay_payment_id,
-                                razorpay_signature: response.razorpay_signature,
-                                caseId: caseDataRes.caseId,
-                                userId: userId
-                            })
-                        });
-                        if (verifyRes.ok) {
-                            alert('Payment Successful!');
-                            window.location.href = 'dashboard.html';
-                        }
-                    },
-                    "theme": { "color": "#2563eb" }
-                };
-                const rzp1 = new Razorpay(options);
-                rzp1.open();
-
-            } catch (error) {
-                alert('Error: ' + error.message);
-            } finally {
-                btn.innerText = 'Pay & Start Support';
-                btn.disabled = false;
+            } catch (err) {
+                console.error(err);
+                alert('Server error creating support case.');
             }
         });
     </script>
 </body>
 </html>
-
-

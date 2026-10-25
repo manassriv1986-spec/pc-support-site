@@ -7,15 +7,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
-<body class="bg-gray-50 flex items-center justify-center min-h-screen px-4">
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Complete Payment</h2>
-        <p class="text-gray-600 mb-2">Case ID: <span id="displayCaseNumber" class="font-mono font-semibold"></span></p>
-        <p class="text-3xl font-black text-blue-600 mb-8" id="displayAmount">₹30</p>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Navigation Header -->
+    <nav class="w-full bg-white border-b border-gray-100 py-4 px-6 flex justify-between items-center shadow-sm">
+        <a href="index.html" class="text-xl font-bold text-blue-600 hover:text-blue-700 transition">
+            Global PC Support
+        </a>
+        <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition flex items-center gap-1">
+            &larr; Home
+        </a>
+    </nav>
 
-        <button id="payBtn" class="w-full bg-green-600 text-white p-4 rounded-lg font-bold hover:bg-green-700 transition shadow-lg">
-            Pay Now with Razorpay
-        </button>
+    <!-- Main Content -->
+    <div class="flex-grow flex items-center justify-center px-4">
+        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Complete Payment</h2>
+            <p class="text-gray-600 mb-2">Case ID: <span id="displayCaseNumber" class="font-mono font-semibold"></span></p>
+            <p class="text-3xl font-black text-blue-600 mb-8" id="displayAmount">₹30</p>
+
+            <button id="payBtn" class="w-full bg-green-600 text-white p-4 rounded-lg font-bold hover:bg-green-700 transition shadow-lg">
+                Pay Now with Razorpay
+            </button>
+        </div>
     </div>
 
     <script>
@@ -31,7 +44,6 @@
 
         document.getElementById('payBtn').addEventListener('click', async () => {
             try {
-                // 1. Create Order on Backend
                 const orderRes = await fetch('/api/payments/create-order', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -44,7 +56,6 @@
                     return;
                 }
 
-                // 2. Initialize Razorpay Checkout
                 const options = {
                     key: orderData.key_id,
                     amount: orderData.amount,
@@ -53,7 +64,6 @@
                     description: "Technical Support Case Payment",
                     order_id: orderData.id,
                     handler: async function (response) {
-                        // 3. Verify Payment on Backend
                         const verifyRes = await fetch('/api/payments/verify', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
