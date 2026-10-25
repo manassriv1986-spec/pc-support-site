@@ -2,7 +2,9 @@
     <a href="index.html" class="text-xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent hover:opacity-90 transition">
         Global PC Support
     </a>
-    <div class="flex items-center gap-3">
+    
+    <!-- Dynamic Nav Actions -->
+    <div class="flex items-center gap-3" id="nav-actions">
         <a href="dashboard.html" class="text-sm font-medium text-gray-300 hover:text-white transition hidden sm:inline-block px-3 py-2">
             Dashboard
         </a>
@@ -14,3 +16,26 @@
         </a>
     </div>
 </nav>
+
+<script>
+    // Check if user session exists in localStorage
+    const loggedInUserId = localStorage.getItem('userId');
+
+    if (loggedInUserId) {
+        // If logged in, replace buttons with Active Session badge and Logout button
+        document.getElementById('nav-actions').innerHTML = `
+            <a href="dashboard.html" class="text-sm font-medium text-gray-300 hover:text-white transition px-3 py-2">Dashboard</a>
+            <span class="text-sm font-semibold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-3 py-1.5 rounded-xl hidden md:inline-block">👤 Active Session</span>
+            <button onclick="logoutUser()" class="text-sm font-semibold text-red-300 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 px-4 py-2 rounded-xl transition cursor-pointer">
+                Logout
+            </button>
+        `;
+    }
+
+    function logoutUser() {
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userName');
+        alert('Logged out successfully.');
+        window.location.href = 'index.html';
+    }
+</script>
