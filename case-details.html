@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Case - Global PC Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen px-4">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-2xl">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Describe Your Issue</h2>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <label class="cursor-pointer border-2 p-6 rounded-xl hover:border-blue-500 transition block text-center relative">
+                <input type="radio" name="issueType" value="normal" checked class="absolute top-4 right-4">
+                <div class="text-blue-600 font-bold text-xl mb-2">Normal Support</div>
+                <p class="text-gray-500 text-sm">General questions, speed issues, app fixes.</p>
+                <p class="text-2xl font-black mt-4">$30</p>
+            </label>
+            <label class="cursor-pointer border-2 p-6 rounded-xl hover:border-red-500 transition block text-center relative">
+                <input type="radio" name="issueType" value="advanced" class="absolute top-4 right-4">
+                <div class="text-red-600 font-bold text-xl mb-2">Advanced Support</div>
+                <p class="text-gray-500 text-sm">Blue screens, critical errors, log analysis.</p>
+                <p class="text-2xl font-black mt-4">$50</p>
+            </label>
+        </div>
+
+        <div class="mb-8">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Describe the problem in detail</label>
+            <textarea id="description" rows="4" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. My PC restarts every time I open Chrome..."></textarea>
+        </div>
+
+        <button id="createCaseBtn" class="w-full bg-blue-600 text-white p-4 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg">
+            Confirm Case & Proceed to Payment <i class="fas fa-credit-card ml-2"></i>
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('createCaseBtn').addEventListener('click', async () => {
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                alert('Please register first!');
+                window.location.href = 'register.html';
+                return;
+            }
+
+            const issueType = document.querySelector('input[name="issueType"]:checked').value;
+            const description = document.getElementById('description').value;
+
+            if (!description) {
+                alert('Please describe your issue!');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/api/cases/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, issueType, description })
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    localStorage.setItem('caseId', result.caseId);
+                    localStorage.setItem('caseNumber', result.caseNumber);
+                    localStorage.setItem('amountDue', result.amountDue);
+                    alert(`Case Created! ID: ${result.caseNumber}. Redirecting to payment...`);
+                    window.location.href = 'payment.html';
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert('Error connecting to server!');
+            }
+        });
+    </script>
+</body>
+</html>
