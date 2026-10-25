@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-CUTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Global PC Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen px-4">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center">
+        <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+            <i class="fas fa-lock"></i>
+        </div>
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Secure Payment</h2>
+        <p class="text-gray-500 mb-8">Complete your payment to unlock support</p>
+
+        <div class="bg-gray-100 p-6 rounded-xl mb-8">
+            <p class="text-gray-600 mb-1">Amount to Pay</p>
+            <p class="text-4xl font-black text-gray-900">$<span id="amount">0</span> <span class="text-lg font-normal text-gray-500">USD</span></p>
+        </div>
+
+        <button id="payNowBtn" class="w-full bg-blue-600 text-white p-4 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg mb-4">
+            Pay with Razorpay <i class="fas fa-credit-card ml-2"></i>
+        </button>
+        <p class="text-xs text-gray-400">Payments are processed securely via Razorpay.</p>
+    </div>
+
+    <script>
+        const amount = localStorage.getItem('amountDue') || '30';
+        const caseId = localStorage.getItem('caseId');
+        const userId = localStorage.getItem('userId');
+        document.getElementById('amount').innerText = amount;
+
+        document.getElementById('payNowBtn').addEventListener('click', async () => {
+            if (!caseId || !userId) {
+                alert('Session expired. Please register again.');
+                window.location.href = 'register.html';
+                return;
+            }
+
+            try {
+                // 1. Create order on our backend
+                const orderResponse = await fetch('/api/payments/create-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ caseId, amount: amount })
+                });
+                const order = await orderResponse.json();
+
+                // 2. Open Razorpay Checkout
+                const options = {
+                    "key": "rzp_test_TowGWirwaWcs2R", // Enter the Key ID generated from the Dashboard
+                    "amount": order.amount,
+                    "currency": "USD",
+                    "name": "Global PC Support",
+                    "description": "Technical Support Case Payment",
+                    "order_id": order.id,
+                    "handler": async function (response) {
+                        // 3. Verify payment on our backend
+                        const verifyResponse = await fetch('/api/payments/verify', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature,
+                                caseId: caseId,
+                                userId: userId
+                            })
+                        });
+
+                        if (verifyResponse.ok) {
+                            alert('Payment Verified! Welcome to your dashboard.');
+                            window.location.href = 'dashboard.html';
+                        } else {
+                            alert('Payment verification failed.');
+                        }
+                    },
+                    "prefill": {
+                        "name": "Customer",
+                        "email": "customer@example.com",
+                        "contact": "9999999999"
+                    },
+                    "theme": {
+                        "color": "#2563eb"
+                    }
+                };
+                const rzp1 = new Razorpay(options);
+                rzp1.open();
+
+            } catch (error) {
+                console.error(error);
+                alert('Error connecting to payment server!');
+            }
+        });
+    </script>
+</body>
+</html>
+
