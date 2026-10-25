@@ -1,8 +1,13 @@
-<nav class="w-full bg-white border-b border-gray-100 py-4 px-6 flex justify-between items-center shadow-sm">
-    <a href="index.html" class="text-xl font-bold text-blue-600 hover:text-blue-700 transition">
+<nav class="w-full bg-white/80 backdrop-blur-md border-b border-gray-200/60 py-4 px-6 md:px-12 flex justify-between items-center shadow-xs sticky top-0 z-50">
+    <a href="index.html" class="text-xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent hover:opacity-90 transition">
         Global PC Support
     </a>
-    <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition">
-        Home
-    </a>
+    <div class="flex items-center gap-4">
+        <a href="dashboard.html" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition hidden sm:inline-block">
+            Dashboard
+        </a>
+        <a href="index.html" class="text-sm font-semibold text-white bg-blue-600 px-4 py-2 rounded-xl hover:bg-blue-700 shadow-sm transition">
+            Home
+        </a>
+    </div>
 </nav>
