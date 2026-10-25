@@ -7,17 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col">
-    <!-- Navigation Header -->
-    <nav class="w-full bg-white border-b border-gray-100 py-4 px-6 flex justify-between items-center shadow-sm">
-        <a href="index.html" class="text-xl font-bold text-blue-600 hover:text-blue-700 transition">
-            Global PC Support
-        </a>
-        <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition flex items-center gap-1">
-            &larr; Home
-        </a>
-    </nav>
+    <div id="nav-placeholder"></div>
 
-    <!-- Main Content -->
     <div class="flex-grow max-w-4xl mx-auto px-4 py-8 w-full">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Support Dashboard</h2>
         <div id="casesList" class="space-y-4">
@@ -26,6 +17,8 @@
     </div>
 
     <script>
+        fetch('navbar.html').then(res => res.text()).then(data => document.getElementById('nav-placeholder').innerHTML = data);
+
         async function loadCases() {
             try {
                 const res = await fetch('/api/cases/all');
