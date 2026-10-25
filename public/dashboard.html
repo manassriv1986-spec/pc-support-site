@@ -6,46 +6,46 @@
     <title>Dashboard - Global PC Support</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
-    <div id="nav-placeholder"></div>
+<body class="min-h-screen flex flex-col text-gray-100 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=2500&q=85');">
+    <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-[2px] z-0"></div>
 
-    <div class="flex-grow max-w-4xl mx-auto px-4 py-8 w-full">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Support Dashboard</h2>
-        <div id="casesList" class="space-y-4">
-            <p class="text-gray-500">Loading cases...</p>
+    <!-- Navigation Placeholder -->
+    <div class="relative z-10 w-full" id="nav-placeholder"></div>
+
+    <!-- Main Dashboard Content -->
+    <div class="relative z-10 flex-grow px-4 sm:px-12 py-10 max-w-5xl mx-auto w-full">
+        <div class="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl">
+            <h1 class="text-3xl font-black text-white mb-2">Support Dashboard</h1>
+            <p class="text-gray-300 text-sm mb-6">Manage your active remote troubleshooting cases and logs.</p>
+
+            <div id="cases-container" class="bg-white/5 border border-white/10 rounded-2xl p-6 text-center text-gray-300">
+                Loading your support cases...
+            </div>
         </div>
     </div>
 
     <script>
-        fetch('navbar.html').then(res => res.text()).then(data => document.getElementById('nav-placeholder').innerHTML = data);
+        // 1. Load the shared modular navbar
+        fetch('navbar.html')
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById('nav-placeholder').innerHTML = data;
+            });
 
-        async function loadCases() {
-            try {
-                const res = await fetch('/api/cases/all');
-                const cases = await res.json();
-                const container = document.getElementById('casesList');
-                
-                if (!cases.length) {
-                    container.innerHTML = '<p class="text-gray-500">No support cases found.</p>';
-                    return;
-                }
-
-                container.innerHTML = cases.map(c => `
-                    <div class="bg-white p-6 rounded-xl shadow-md flex justify-between items-center">
-                        <div>
-                            <span class="font-mono font-bold text-blue-600">${c.caseNumber}</span>
-                            <p class="text-sm text-gray-600 mt-1">${c.description}</p>
-                            <span class="inline-block mt-2 text-xs px-2 py-1 bg-gray-100 rounded uppercase font-semibold">${c.status}</span>
-                        </div>
-                        <a href="case-details.html?id=${c._id}" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition">View</a>
-                    </div>
-                `).join('');
-            } catch (err) {
-                console.error(err);
-                document.getElementById('casesList').innerHTML = '<p class="text-red-500">Error loading cases.</p>';
-            }
+        // 2. Check Session Security
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            alert('Please log in to access your dashboard.');
+            window.location.href = 'login.html';
+        } else {
+            // Fetch cases for logged-in user (simulated/placeholder API call)
+            document.getElementById('cases-container').innerHTML = `
+                <p class="text-sm text-gray-300">No active support cases found for User ID: <span class="font-mono text-blue-400">${userId}</span></p>
+                <a href="register.html" class="inline-block mt-4 bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-2.5 rounded-xl transition shadow-lg shadow-blue-600/30 text-sm">
+                    Register a New Case
+                </a>
+            `;
         }
-        loadCases();
     </script>
 </body>
 </html>
